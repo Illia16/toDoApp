@@ -1,0 +1,222 @@
+//// Main ///////
+.sectionOne {
+    // Background is from unsplash.com made by Brooke Lark
+    background: url(../assets/sectionOneBackground.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+}
+
+.sectionOne .wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+.sectionOne .wrapper > * {
+    margin-bottom: 30px;
+    align-self: flex-end;
+    width: 400px;
+    text-align: left;
+}
+
+.sectionTwo {
+    // Background is from unsplash.com made by Jakub Kapusnak
+    background: url(../assets/tableBackground.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.sectionTwo h3 {
+    -webkit-text-stroke: 0.7px black;
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 1);
+}
+
+.sectionTwo .wrapper {
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
+// ITEMS
+.cooked {
+    flex: 1 0 300px;
+}
+
+.items {
+    flex: 1 0 100px;
+}
+
+.items,
+.cooked,
+.table {
+    padding: 15px;
+}
+
+// TABLE
+.sectionTwo .table {
+    order: 2;
+    flex: 1 0 100%;
+}
+
+.sectionTwo .table .done {
+    text-align: center;
+    background: darkorange;
+}
+
+// COOKED
+.sectionTwo .cookedMeals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 200px);
+    justify-content: center;
+    grid-gap: 20px;
+}
+
+.sectionTwo .cookedMeals li,
+ul.ingridients li {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    box-shadow: #000 5px 5px;
+    text-align: center;
+    background:  rgba(230, 213, 213, 0.9);
+    padding: 5px;
+}
+
+ul.ingridients,
+ul.chosenIngridients,
+.cookedMeals {
+    height: 450px;
+    overflow: auto;
+}
+
+ul.ingridients,
+ul.chosenIngridients {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 100px);
+    grid-template-rows: repeat(auto-fit, 200px);
+    justify-content: center;
+    grid-gap: 20px;
+    text-align: center;
+}
+
+
+ul li div {
+    text-align: center;
+}
+
+.ingridients button {
+    margin: 0 auto;
+}
+
+
+// Cooked
+// .unlocked {
+//     color: white;
+// }
+
+button {
+    border: 2px solid transparent;
+    background: #a2d416;
+    transition: all 0.5s;
+}
+
+button:hover,
+button:focus {
+    border: 2px solid #a2d416;
+    background: none;
+}
+
+.closeWindow {
+    font-size: 2.5rem;
+    color: #a2d416;
+    background: transparent;
+    transition: all 0.5s;
+}
+.closeWindow:hover,
+.closeWindow:focus {
+    transform: rotate(360deg);
+    color: red;
+    border: 2px solid transparent;
+}
+
+
+
+//FORMS /////////////////////////////////
+fieldset {
+    border: 0;
+    padding: 0;
+}
+
+.addNewRecipe {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+form,
+.moreIngridients {
+    flex: 1 0 100%;
+}
+
+form,
+form h3 {
+    padding: 40px 0;
+}
+
+.addNewRecipe fieldset input, 
+.addNewRecipe fieldset button {
+    padding: 15px;
+}
+
+.newIngr {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 40px;
+}
+
+input[type="text"],
+input[type="number"] {
+    border: none;
+    border: transparent 2px solid;
+    transition: all 0.3s;
+}
+
+input[type="text"]:hover,
+input[type="text"]:focus,
+input[type="number"]:hover,
+input[type="number"]:focus {
+    border: #a2d416 2px solid;
+}
+
+.moreIngridients {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    grid-gap: 25px;
+    grid-column: 1 / -1;
+}
+
+// .newMeal button {
+//     flex: 1 0 100px;
+// }
+
+
+.newMeal input[type="text"],
+.newMeal label,
+.newMeal input[type="number"] {
+    flex: 1 0 calc(100%/3);
+}
+
+.newMeal > * {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+
+.newMeal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
