@@ -3,23 +3,67 @@ import firebase from './firebase';
 import './App.css';
 
 
+
 class App extends Component {
     constructor() {
         super();
         this.state = {
         list: [],
         howMuch: [],
-        visitorCount: 0
+        firebaseObj: firebase.database().ref(),
+        userInput: []
         }
     }
-    
-    addItem = () => {
+
+    inputChange = (e) => {
+        e.preventDefault();
+        const copy = this.state.userInput;
+        copy[0] = e.target.value;
+
         this.setState({
-            visitorCount: this.state.visitorCount + 1,
+            userInput: copy, 
         })
 
-        const itemToAdd = document.getElementById('itemInput').value;
-        const itemToAddQuantity = document.getElementById('itemQuantity').value;
+        // Have to input twice!!! WAS BEFORE
+        // this.setState(({val}), () => {
+        //     this.state.userInput[0] = val
+        //     console.log(this.state.userInput);
+        // })
+    }
+
+    // doesn't work properly
+    // inputChange = (e) => {
+    //     e.preventDefault();
+
+    //     this.setState({userInput: [...this.state.userInput, e.target.value]}, () => {
+    //         console.log(this.state.userInput);
+    //     })
+    // }
+
+    inputQChange = (e) => {
+        e.preventDefault();
+        const copy = this.state.userInput;
+        copy[1] = e.target.value;
+
+        this.setState({
+            userInput: copy, 
+        })
+
+    //WAS BEFORE
+        // e.preventDefault();
+        // const val = e.target.value;
+
+        // this.setState(({val}), () => {
+        //     this.state.userInput[1] = val;
+        //     console.log(this.state.userInput);
+        // })
+    }
+    
+    addItem = (e) => {
+        e.preventDefault();
+
+        const itemToAdd = this.state.userInput[0];
+        const itemToAddQuantity = this.state.userInput[1];
         console.log(itemToAdd, itemToAddQuantity);
         
         const newListArray = []; 
@@ -29,29 +73,34 @@ class App extends Component {
 
         this.setState({
             list: newListArray,
-            howMuch: newHowMuch
+            howMuch: newHowMuch,
+            userInput: ["", ""]
         })
 
-        firebase.database().ref().update({[newListArray]: newHowMuch});
+        this.state.firebaseObj.update({[newListArray]: newHowMuch});
     }
 
-    removeAll = () => {
+    // removing a certain list element
+    deleteList = (listEl) => {    
+        this.state.firebaseObj.child(listEl).remove();
+    }
+
+    // emptying the whole list
+    deleteAll = (e) => {
+        e.preventDefault();
+
         this.setState({
             list: [],
             howMuch: []
         })
 
-        firebase.database().ref().set(null);
+        this.state.firebaseObj.set(null);
     }
 
-    onSubmit = (e) => {
-        e.preventDefault();
-    }
-
+    // getting up-to-date data from database
     componentDidMount() {
-    const dbRef = firebase.database().ref();
 
-        dbRef.on('value', (snapshot) => {
+    this.state.firebaseObj.on('value', (snapshot) => {
         console.log(snapshot.val());
 
         const data = snapshot.val();
@@ -73,16 +122,21 @@ class App extends Component {
         })
     }
 
+
+
     render() {
         return (
             <div>
-                <form action="" onSubmit={this.onSubmit}>
+                <form action="">
                     <fieldset>
                         <label htmlFor="itemInput">Input field</label>
-                        <input type="text" id="itemInput" placeholder="item"></input>
-                        <input type="text" id="itemQuantity" placeholder="quantity"></input>
+                        <input onChange={this.inputChange} value={this.state.userInput[0]} type="text" id="itemInput" placeholder="item"></input>
+
+                        <label htmlFor="itemQuantity">Input field</label>
+                        <input onChange={this.inputQChange} value={this.state.userInput[1]} type="text" id="itemQuantity" placeholder="quantity"></input>
+
                         <button onClick={this.addItem}>Add</button>
-                        <button onClick={this.removeAll}>Remove All</button>
+                        <button onClick={this.deleteAll}>Remove All</button>
                     </fieldset>
                 </form>
 
@@ -97,6 +151,7 @@ class App extends Component {
                             <li>
                                 {listItem}
                                 <span>{quantity}</span>
+                                <button onClick={ () => this.deleteList(listItem)} >Remove</button>
                             </li>
                         )
                     })
