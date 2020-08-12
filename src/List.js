@@ -8,80 +8,56 @@ class App extends Component {
     constructor() {
         super();
         this.state = {
+        firebaseObj: firebase.database().ref(),
         list: [],
         howMuch: [],
-        firebaseObj: firebase.database().ref(),
-        userInput: []
+        userInput: "",
+        userInputQuantity: "",
         }
     }
 
     inputChange = (e) => {
         e.preventDefault();
-        const copy = this.state.userInput;
-        copy[0] = e.target.value;
+        console.log(e.target.name, e.target.value);
+        //console.log(this.state.list);
 
         this.setState({
-            userInput: copy, 
+            [e.target.name]: e.target.value,
         })
-
-        // Have to input twice!!! WAS BEFORE
-        // this.setState(({val}), () => {
-        //     this.state.userInput[0] = val
-        //     console.log(this.state.userInput);
-        // })
     }
 
-    // doesn't work properly
-    // inputChange = (e) => {
-    //     e.preventDefault();
-
-    //     this.setState({userInput: [...this.state.userInput, e.target.value]}, () => {
-    //         console.log(this.state.userInput);
-    //     })
-    // }
-
-    inputQChange = (e) => {
-        e.preventDefault();
-        const copy = this.state.userInput;
-        copy[1] = e.target.value;
-
-        this.setState({
-            userInput: copy, 
-        })
-
-    //WAS BEFORE
-        // e.preventDefault();
-        // const val = e.target.value;
-
-        // this.setState(({val}), () => {
-        //     this.state.userInput[1] = val;
-        //     console.log(this.state.userInput);
-        // })
-    }
     
     addItem = (e) => {
         e.preventDefault();
 
-        const itemToAdd = this.state.userInput[0];
-        const itemToAddQuantity = this.state.userInput[1];
-        console.log(itemToAdd, itemToAddQuantity);
         
-        const newListArray = []; 
-        const newHowMuch = [];
-        newListArray.push(itemToAdd);
-        newHowMuch.push(itemToAddQuantity);
+        if (this.state.userInput === "") {
+            alert('Nothing\'s selected')
+        } else {       
+            const itemToAdd = this.state.userInput;
+            const itemToAddQuantity = this.state.userInputQuantity;
+            console.log(itemToAdd, itemToAddQuantity);
+            
+            const newListArray = []; 
+            const newHowMuch = [];
+            newListArray.push(itemToAdd);
+            newHowMuch.push(itemToAddQuantity);
 
-        this.setState({
-            list: newListArray,
-            howMuch: newHowMuch,
-            userInput: ["", ""]
-        })
+            this.setState({
+                list: newListArray,
+                howMuch: newHowMuch,
+                userInput: "",
+                userInputQuantity: ""
+            })
+            
+            this.state.firebaseObj.update({[newListArray]: newHowMuch});
+        }
 
-        this.state.firebaseObj.update({[newListArray]: newHowMuch});
+        console.log(this.state.firebaseObj);
     }
 
     // removing a certain list element
-    deleteList = (listEl) => {    
+    deleteList = (listEl) => {
         this.state.firebaseObj.child(listEl).remove();
     }
 
@@ -100,29 +76,27 @@ class App extends Component {
     // getting up-to-date data from database
     componentDidMount() {
 
-    this.state.firebaseObj.on('value', (snapshot) => {
-        console.log(snapshot.val());
+        this.state.firebaseObj.on('value', (snapshot) => {
+            console.log(snapshot.val());
 
-        const data = snapshot.val();
-        const newListArray = [];
-        const newHowMuch = [];
+            const data = snapshot.val();
+            const newListArray = [];
+            const newHowMuch = [];
 
-        for (let propertyName in data) {
-            newListArray.push(propertyName);
-            newHowMuch.push(data[propertyName]);
-        }
+            for (let propertyName in data) {
+                newListArray.push(propertyName);
+                newHowMuch.push(data[propertyName]);
+            }
 
-        console.log(newListArray);
+            console.log(newListArray);
 
-        this.setState({
-            list: newListArray,
-            howMuch: newHowMuch
-        })
+            this.setState({
+                list: newListArray,
+                howMuch: newHowMuch
+            })
 
-        })
+            })
     }
-
-
 
     render() {
         return (
@@ -130,10 +104,10 @@ class App extends Component {
                 <form action="">
                     <fieldset>
                         <label htmlFor="itemInput">Input field</label>
-                        <input onChange={this.inputChange} value={this.state.userInput[0]} type="text" id="itemInput" placeholder="item"></input>
+                        <input onChange={this.inputChange} name="userInput" value={this.state.userInput} type="text" id="itemInput" placeholder="item"></input>
 
                         <label htmlFor="itemQuantity">Input field</label>
-                        <input onChange={this.inputQChange} value={this.state.userInput[1]} type="text" id="itemQuantity" placeholder="quantity"></input>
+                        <input onChange={this.inputChange} name="userInputQuantity" value={this.state.userInputQuantity} type="text" id="itemQuantity" placeholder="quantity"></input>
 
                         <button onClick={this.addItem}>Add</button>
                         <button onClick={this.deleteAll}>Remove All</button>
@@ -146,9 +120,9 @@ class App extends Component {
                 {
                     this.state.list.map( (listItem, index) => {
                         const quantity = this.state.howMuch[index]
-                        
+
                         return (
-                            <li>
+                            <li key={`keyFor`+listItem}>
                                 {listItem}
                                 <span>{quantity}</span>
                                 <button onClick={ () => this.deleteList(listItem)} >Remove</button>
