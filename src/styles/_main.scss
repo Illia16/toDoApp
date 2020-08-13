@@ -1,0 +1,157 @@
+button {
+    border: 2px solid transparent;
+    background: black;
+    color: white;
+    transition: all 0.5s;
+    padding: 5px 10px;
+}
+
+button:hover,
+button:focus {
+    border: 2px solid black;
+    background: white;
+    color: black;
+}
+
+.closeWindow {
+    border: none;
+    background: transparent;
+    color: black;
+    font-size: 2.5rem;
+    padding: 10px;
+    transition: all 0.3s;
+}
+.closeWindow:hover,
+.closeWindow:focus {
+    border: none;
+    background: none;
+    color: red;
+    transform: scale(1.25);
+}
+
+//FORMS /////////////////////////////////
+fieldset {
+    border: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+fieldset > *,
+.removeAll button {
+    padding: 10px;
+    margin: 20px;
+}
+
+fieldset label {
+    flex: 0 0 250px;
+}
+
+fieldset label:first-of-type {
+    margin: 0 20px;
+}
+
+fieldset input:first-of-type {
+    flex: 1 0 calc(100% * 2/3);
+}
+
+fieldset input,
+fieldset button {
+    flex: 1 0 20%;
+}
+
+input[type="text"] {
+    border: black 2px solid;
+    transition: all 0.3s;
+}
+
+input[type="text"]:hover,
+input[type="text"]:focus {
+    border: transparent 2px solid;
+    border-bottom: black 2px solid;
+}
+
+// LIST
+
+main ul {
+    display: flex;
+    flex-direction: column;
+}
+
+main li {
+    text-transform: capitalize;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(100px, 300px)) 50px;
+    margin: 20px auto;
+    align-items: center;
+}
+
+main li > * {
+    margin: 0 10px;
+}
+
+.thingsToDo span {
+    font-weight: 700;
+    font-size: 2.3rem;
+}
+
+.removeAll,
+.waitingClock {
+    text-align: center;
+}
+
+.waitingClock {
+    width: 150px;
+    margin: 0 auto;
+}
+
+// languages
+.languages {
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.languages button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 1.6rem;
+    background: transparent;
+    color: black;
+    border: none;
+}
+
+.languages button:hover,
+.languages button:focus {
+    transform: scale(1.25);
+}
+
+
+// Footer
+footer {
+    display: flex;
+    justify-content: center;
+    background: black;
+}
+
+footer > * {
+    color: white;
+    padding: 5px 10px;
+    transition: all 0.3s;
+}
+
+footer .linkedin {
+    color: #0e76a8;
+}
+
+footer .github:hover,
+footer .github:focus,
+footer .linkedin:hover,
+footer .linkedin:focus {
+    transform: scale(1.25);
+}

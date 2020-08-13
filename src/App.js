@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import List from "./List";
-import './App.css';
+import Footer from "./Footer";
+import './App.scss';
 
 class ToDoApp extends Component {
   render() {
     return (
       <div className="App">
-        <h1>To do</h1>
         <List />
+        <Footer />
       </div>
     );
   }
