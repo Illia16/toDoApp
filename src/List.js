@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import firebase from './firebase';
-// import Languages from './Languages';
+import Error from './Error';
 import './App.scss';
 
 class App extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             firebaseObj: firebase.database().ref(),
             list: [],
@@ -13,6 +13,7 @@ class App extends Component {
             userInput: "",
             userInputQuantity: "",
             ready: false,
+            errorPopUp: false,
             languageInterface: {
                 en: {
                     h1: "To do list",
@@ -23,7 +24,9 @@ class App extends Component {
                     addBtn: "ADD",
                     h2: "List of current things",
                     removeThisEl: "Remove only this item",
-                    removeAllBth: "REMOVE ALL ITEMS"
+                    removeAllBth: "REMOVE ALL ITEMS",
+                    errorMsg: "Nothing's selected",
+                    closeErrorMsg: "CLOSE",
                 },
                 ru: {
                     h1: "Cписок дел",
@@ -34,7 +37,9 @@ class App extends Component {
                     addBtn: "Добавить",
                     h2: "Cписок текущих дел",
                     removeThisEl: "удалить только этот элемент",
-                    removeAllBth: "Удалить все элементы"
+                    removeAllBth: "Удалить все элементы",
+                    errorMsg: "Ничего не выбрано",
+                    closeErrorMsg: "Закрыть",
                 },
                 cn: {
                     h1: "任務清單",
@@ -45,7 +50,9 @@ class App extends Component {
                     addBtn: "添加",
                     h2: "目前的清單",
                     removeThisEl: "只移除這項物品",
-                    removeAllBth: "清除所有物品"
+                    removeAllBth: "清除所有物品",
+                    errorMsg: "未選取任何物品",
+                    closeErrorMsg: "關閉",
                 }
             },
             languageCurrent: {
@@ -57,7 +64,9 @@ class App extends Component {
                 addBtn: "ADD",
                 h2: "List of current things",
                 removeThisEl: "Remove only this item",
-                removeAllBth: "REMOVE ALL ITEMS"
+                removeAllBth: "REMOVE ALL ITEMS",
+                errorMsg: "Nothing's selected",
+                closeErrorMsg: "CLOSE",
                 },
         }
     }
@@ -76,7 +85,9 @@ class App extends Component {
 
         
         if (this.state.userInput === "") {
-            alert('Nothing\'s selected')
+            this.setState({
+                errorPopUp: true,
+            })
         } else {       
             const itemToAdd = this.state.userInput;
             const itemToAddQuantity = this.state.userInputQuantity;
@@ -142,6 +153,13 @@ class App extends Component {
             languageCurrent: this.state.languageInterface[val.target.value]
         })
     }
+
+    closeErrorPopUp = () => {
+        this.setState({
+            errorPopUp: false,
+        })
+    }
+
     render() {
         return (
             <main className="wrapper">
@@ -153,15 +171,28 @@ class App extends Component {
 
                 <h1>{this.state.languageCurrent.h1}</h1>
 
+                {
+                
+                this.state.errorPopUp ?
+                <Error
+                error={this.state.languageCurrent.errorMsg}
+                closeWindowText={this.state.languageCurrent.closeErrorMsg}
+                closeWindow={this.closeErrorPopUp}
+                />
+                : null
+                }
+
                 <form action="">
                     <fieldset>
-                        <label htmlFor="itemInput">{this.state.languageCurrent.item}</label>
-                        <input onChange={this.inputChange} name="userInput" value={this.state.userInput} type="text" id="itemInput" placeholder={this.state.languageCurrent.itemPlaceholder}></input>
+                        <div className="userInputSection">
+                            <label htmlFor="itemInput">{this.state.languageCurrent.item}</label>
+                            <input onChange={this.inputChange} name="userInput" value={this.state.userInput} type="text" id="itemInput" placeholder={this.state.languageCurrent.itemPlaceholder} ></input>
 
-                        <label htmlFor="itemQuantity">{this.state.languageCurrent.quantity}</label>
-                        <input onChange={this.inputChange} name="userInputQuantity" value={this.state.userInputQuantity} type="text" id="itemQuantity" placeholder={this.state.languageCurrent.quantityPlaceholder}></input>
+                            <label htmlFor="itemQuantity">{this.state.languageCurrent.quantity}</label>
+                            <input onChange={this.inputChange} name="userInputQuantity" value={this.state.userInputQuantity} type="text" id="itemQuantity" placeholder={this.state.languageCurrent.quantityPlaceholder}></input>
 
-                        <button onClick={this.addItem}>{this.state.languageCurrent.addBtn}</button>
+                            <button onClick={this.addItem}>{this.state.languageCurrent.addBtn}</button>
+                        </div>
                     </fieldset>
                 </form>
 

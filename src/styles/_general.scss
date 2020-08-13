@@ -24,6 +24,8 @@ p {
     display: inline-block;
 }
 
-::placeholder {
+::-webkit-input-placeholder,
+::-moz-placeholder,
+:-ms-input-placeholder {
     opacity: 1;
 }
