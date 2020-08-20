@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
-import List from "./List";
+import Main from "./Main";
 import Footer from "./Footer";
-import './App.scss';
+import "./styles/app.scss";
 
 class ToDoApp extends Component {
   render() {
     return (
       <div className="App">
-        <List />
+        <Main />
         <Footer />
       </div>
     );
-  }
-}
+  };
+};
 
 export default ToDoApp;

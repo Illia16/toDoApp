@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import firebase from './firebase';
 import Error from './Error';
-import './App.scss';
+import "./styles/app.scss";
 
-class App extends Component {
+class Main extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -68,97 +68,110 @@ class App extends Component {
                 errorMsg: "Nothing's selected",
                 closeErrorMsg: "CLOSE",
                 },
-        }
-    }
+        };
+    };
     
     inputChange = (e) => {
         e.preventDefault();
 
         this.setState({
             [e.target.name]: e.target.value,
-        })
-    }
+        });
+    };
+
+    // function that finds the number of LETTER IN THE LONGEST WORD FROM THE INPUT
+    longestWord = (input) => {
+        let arr = input.split(" ");
+        let longestWord = 0;
+        
+        for (let i=0; i<arr.length; i++) {
+            if (arr[i].length > longestWord) {
+            longestWord = arr[i].length;
+            };
+        };
+        return longestWord;
+    };
 
     
     addItem = (e) => {
         e.preventDefault();
 
-        
-        if (this.state.userInput === "") {
+        const longestWordItem = this.longestWord(this.state.userInput);
+        const longestWordQuantity = this.longestWord(this.state.userInputQuantity);
+
+        if (this.state.userInput === "" || longestWordItem > 30 || longestWordQuantity > 30) {
             this.setState({
                 errorPopUp: true,
             })
         } else {       
             const itemToAdd = this.state.userInput;
             const itemToAddQuantity = this.state.userInputQuantity;
-            
+
             const newListArray = []; 
             const newHowMuch = [];
+
             newListArray.push(itemToAdd);
             newHowMuch.push(itemToAddQuantity);
+            
+            this.state.firebaseObj.update({[newListArray]: newHowMuch});
+            this.updateDOM();
+        };
+    };
+
+    updateDOM = () => {
+        this.state.firebaseObj.on('value', (snapshot) => {
+            const data = snapshot.val();
+            const newListArray = [];
+            const newHowMuch = [];
+
+            for (let propertyName in data) {
+                newListArray.push(propertyName);
+                newHowMuch.push(data[propertyName]);
+            };
 
             this.setState({
                 list: newListArray,
                 howMuch: newHowMuch,
+                ready: true,
                 userInput: "",
                 userInputQuantity: ""
-            })
-            
-            this.state.firebaseObj.update({[newListArray]: newHowMuch});
-        }
+            });
+        });
     }
 
     // removing a certain list element
     deleteList = (listEl) => {
         this.state.firebaseObj.child(listEl).remove();
-    }
+    };
     
     // emptying the whole list
     deleteAll = (e) => {
         e.preventDefault();
-
         this.setState({
             list: [],
             howMuch: []
-        })
-
+        });
         this.state.firebaseObj.set(null);
-    }
+    };
 
     // getting up-to-date data from database
     componentDidMount() {
-
-        this.state.firebaseObj.on('value', (snapshot) => {
-                const data = snapshot.val();
-                const newListArray = [];
-                const newHowMuch = [];
-
-                for (let propertyName in data) {
-                    newListArray.push(propertyName);
-                    newHowMuch.push(data[propertyName]);
-                }
-
-                this.setState({
-                    list: newListArray,
-                    howMuch: newHowMuch,
-                    ready: true
-                });
-            })
-    }
+        this.updateDOM();
+    };
 
     changeLang = (val) => {
         val.preventDefault();
 
         this.setState({
             languageCurrent: this.state.languageInterface[val.target.value]
-        })
-    }
+        });
+    };
 
     closeErrorPopUp = () => {
         this.setState({
             errorPopUp: false,
-        })
-    }
+        });
+    };
 
     render() {
         return (
@@ -206,7 +219,7 @@ class App extends Component {
                             <li key={`keyFor`+listItem} className="thingsToDo">
                                 <p><span>{index + 1 + '.'}</span> {listItem}</p>
                                 <p>{quantity}</p>
-                                <button onClick={ () => this.deleteList(listItem)} className="closeWindow" aria-label={this.state.languageCurrent.removeThisEl} ><i className="fas fa-times"></i></button>
+                                <button onClick={ () => this.deleteList(listItem)} className="closeWindow" aria-label={this.state.languageCurrent.removeThisEl} title="Remove this item"><i className="fas fa-times" aria-hidden="true"></i></button>
                             </li>
                         )
                     })
@@ -220,7 +233,7 @@ class App extends Component {
                 }
             </main>
         );
-    }
-}
+    };
+};
 
-export default App;
+export default Main;

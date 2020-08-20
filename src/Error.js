@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import './App.scss';
+import React from 'react';
+import "./styles/app.scss";
 
 const Error = ( props ) => {
 
@@ -10,7 +10,7 @@ const Error = ( props ) => {
                 <button onClick={props.closeWindow} >{props.closeWindowText}</button>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Error;
