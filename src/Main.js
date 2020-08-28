@@ -14,38 +14,58 @@ class Main extends Component {
             userInputQuantity: "",
             ready: false,
             errorPopUp: false,
+            longest: 0,
+            amountWords: 0,
         };
     };
     
     inputChange = (e) => {
         e.preventDefault();
+        this.checkingInput(e.target.value);
 
         this.setState({
             [e.target.name]: e.target.value,
         });
     };
 
-    // function that finds the number of LETTER IN THE LONGEST WORD FROM THE INPUT
-    longestWord = (input) => {
-        let arr = input.split(" ");
-        let longestWord = 0;
-        
-        for (let i=0; i<arr.length; i++) {
-            if (arr[i].length > longestWord) {
-            longestWord = arr[i].length;
-            };
-        };
-        return longestWord;
-    };
+    // function that finds a NUMBER of LETTERS IN THE LONGEST WORD FROM THE INPUT(30)
+    // Also getting AMOUNT of WORDS in the input to check that our input isn't more than CERTAIN AMOUNT OF WORDS(20)
+    checkingInput = (input) => {
+        if (!input) {
+            this.setState({
+                longest: 0,
+                amountWords: 0
+            })
+            return
+        } else {
+            let arr = input.split(" ");
 
+            //making sure SPACE ISN"T INCLUDED AS A WORD
+            const arrMod = arr.filter(el => el);
+
+            let longestWord = 0;
+            
+            for (let i=0; i<arr.length; i++) {
+                if (arr[i].length > longestWord) {
+                    longestWord = arr[i].length;
+                };
+            };
+
+            this.setState({
+                longest: longestWord,
+                amountWords: arrMod.length,
+            })
+        }
+    };
     
     addItem = (e) => {
         e.preventDefault();
 
-        const longestWordItem = this.longestWord(this.state.userInput);
-        const longestWordQuantity = this.longestWord(this.state.userInputQuantity);
-
-        if (this.state.userInput === "" || longestWordItem > 30 || longestWordQuantity > 30) {
+        // checking if user inputs are valid:
+            // -NOT EMPTY, 
+            // -DON'T HAVE MORE THAN 20 WORDS, 
+            // -LONGEST WORD ISN'T MORE THAN 30 LETTERS IN LENGTH
+        if (this.state.userInput === "" || this.state.longest > 30 || this.state.amountWords > 20) {
             this.setState({
                 errorPopUp: true,
             })
@@ -80,7 +100,9 @@ class Main extends Component {
                 howMuch: newHowMuch,
                 ready: true,
                 userInput: "",
-                userInputQuantity: ""
+                userInputQuantity: "",
+                longest: 0,
+                amountWords: 0,
             });
         });
     }
@@ -128,6 +150,7 @@ class Main extends Component {
                 
                 this.state.errorPopUp ?
                 <Error
+                states={this.state}
                 error={errorMsg}
                 closeWindowText={closeErrorMsg}
                 closeWindow={this.closeErrorPopUp}

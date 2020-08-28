@@ -18,7 +18,10 @@ class ToDoApp extends Component {
             h2: "List of current things",
             removeThisEl: "Remove only this item",
             removeAllBth: "REMOVE ALL ITEMS",
-            errorMsg: "Nothing's selected",
+            errorMsg: {
+              noText: "Nothing's selected. Please, input the item you want",
+              tooLongWord: "Input is too long",
+            },
             closeErrorMsg: "CLOSE",
             madeBy: 'Made by',
         },
@@ -33,6 +36,10 @@ class ToDoApp extends Component {
             removeThisEl: "удалить только этот элемент",
             removeAllBth: "Удалить все элементы",
             errorMsg: "Ничего не выбрано",
+            errorMsg: {
+              noText: "Ничего не выбрано. Пожалуйста, напишите то, что вы хотите добавить",
+              tooLongWord: "Текст слишком длинны",
+            },
             closeErrorMsg: "Закрыть",
             madeBy: "Разработал",
             
@@ -48,6 +55,10 @@ class ToDoApp extends Component {
             removeThisEl: "只移除這項物品",
             removeAllBth: "清除所有物品",
             errorMsg: "未選取任何物品",
+            errorMsg: {
+              noText: "未選取任何物品。請點選您想要的物品",
+              tooLongWord: "選取過多",
+            },
             closeErrorMsg: "關閉",
             madeBy: "製作者",
         }
@@ -62,7 +73,10 @@ class ToDoApp extends Component {
         h2: "List of current things",
         removeThisEl: "Remove only this item",
         removeAllBth: "REMOVE ALL ITEMS",
-        errorMsg: "Nothing's selected",
+        errorMsg: {
+          noText: "Nothing's selected. Please, input the item you want",
+          tooLongWord: "Input is too long",
+        },
         closeErrorMsg: "CLOSE",
         madeBy: 'Made by',
       },
