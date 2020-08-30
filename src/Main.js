@@ -14,14 +14,20 @@ class Main extends Component {
             userInputQuantity: "",
             ready: false,
             errorPopUp: false,
-            longest: 0,
-            amountWords: 0,
+            longest: {
+                userInput: 0,
+                userInputQuantity: 0,
+            },
+            amountWords: {
+                userInput: 0,
+                userInputQuantity: 0,
+            },
         };
     };
     
     inputChange = (e) => {
         e.preventDefault();
-        this.checkingInput(e.target.value);
+        this.checkingInput(e.target);
 
         this.setState({
             [e.target.name]: e.target.value,
@@ -31,20 +37,28 @@ class Main extends Component {
     // function that finds a NUMBER of LETTERS IN THE LONGEST WORD FROM THE INPUT(30)
     // Also getting AMOUNT of WORDS in the input to check that our input isn't more than CERTAIN AMOUNT OF WORDS(20)
     checkingInput = (input) => {
-        if (!input) {
+        const value = input.value;
+
+        if (!value) {
             this.setState({
-                longest: 0,
-                amountWords: 0
+                longest:  {
+                    ...this.state.longest,
+                    [input.name]: 0,
+                },
+                amountWords: {
+                    ...this.state.amountWords,
+                    [input.name]: 0,
+                },
             })
             return
         } else {
-            let arr = input.split(" ");
+            let arr = value.split(" ");
 
-            //making sure SPACE ISN"T INCLUDED AS A WORD
+            //making sure SPACE ISN'T INCLUDED IN THE ARRAY
             const arrMod = arr.filter(el => el);
-
-            let longestWord = 0;
             
+            // getting the number of letters in the longest word out of all words from the input
+            let longestWord = 0;
             for (let i=0; i<arr.length; i++) {
                 if (arr[i].length > longestWord) {
                     longestWord = arr[i].length;
@@ -52,8 +66,16 @@ class Main extends Component {
             };
 
             this.setState({
-                longest: longestWord,
-                amountWords: arrMod.length,
+                // longest: longestWord,
+                // amountWords: arrMod.length,
+                longest:  {
+                    ...this.state.longest,
+                    [input.name]: longestWord,
+                },
+                amountWords: {
+                    ...this.state.amountWords,
+                    [input.name]: arrMod.length,
+                },
             })
         }
     };
@@ -65,7 +87,8 @@ class Main extends Component {
             // -NOT EMPTY, 
             // -DON'T HAVE MORE THAN 20 WORDS, 
             // -LONGEST WORD ISN'T MORE THAN 30 LETTERS IN LENGTH
-        if (this.state.userInput === "" || this.state.longest > 30 || this.state.amountWords > 20) {
+        if (this.state.userInput === "" || this.state.longest.userInput > 30 || this.state.longest.userInputQuantity > 30
+        || this.state.amountWords.userInput > 20 || this.state.amountWords.userInputQuantity > 20 ) {
             this.setState({
                 errorPopUp: true,
             })
@@ -101,8 +124,14 @@ class Main extends Component {
                 ready: true,
                 userInput: "",
                 userInputQuantity: "",
-                longest: 0,
-                amountWords: 0,
+                longest: {
+                    userInput: 0,
+                    userInputQuantity: 0,
+                },
+                amountWords: {
+                    userInput: 0,
+                    userInputQuantity: 0,
+                },
             });
         });
     }

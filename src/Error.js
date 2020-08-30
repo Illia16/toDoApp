@@ -2,13 +2,14 @@ import React from 'react';
 import "./styles/app.scss";
 
 const Error = ( props ) => {
-    const {states:{longest}, error:{noText, tooLongWord}, closeWindow, closeWindowText} = props;
-    
+    const {states:{ longest:{userInput, userInputQuantity}}, error:{noText, tooLongWord}, closeWindow, closeWindowText} = props;
+
     return(
         <div className="popupBack">
             <div className="popup">
+                {/* showing the right type of error */}
                 {
-                longest === 0 ? <p>{noText}</p> : <p>{tooLongWord}</p>
+                (!props.states.userInput) ? <p>{noText}</p> : <p>{tooLongWord}</p>
                 }
                 <button onClick={closeWindow} >{closeWindowText}</button>
             </div>
