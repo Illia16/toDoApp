@@ -22,7 +22,43 @@ class Main extends Component {
                 userInput: 0,
                 userInputQuantity: 0,
             },
+            loggedIn: false,
+            user: {
+                id: 'User',
+                displayedName: null,
+            },
         };
+    };
+
+    logIn = () => {
+        const provider = new firebase.auth.GoogleAuthProvider();
+        const auth = firebase.auth();
+
+        auth.signInWithPopup(provider).then( (result) => {          
+            this.setState({
+                loggedIn: true,
+                user: {
+                    id: result.user.uid,
+                    displayedName: result.user.displayName,
+                },
+            });
+            this.updateDOM();
+        });
+    };
+
+    logOut = () => {
+        const auth = firebase.auth();
+
+        auth.signOut().then( () => {
+            this.setState({
+                loggedIn: false,
+                user: {
+                    id: 'User',
+                    displayedName: null,
+                },
+            });
+            this.updateDOM();
+        });
     };
     
     inputChange = (e) => {
@@ -92,68 +128,76 @@ class Main extends Component {
             this.setState({
                 errorPopUp: true,
             })
-        } else {       
+        } else {
             const itemToAdd = this.state.userInput;
             const itemToAddQuantity = this.state.userInputQuantity;
+            this.state.firebaseObj.child(this.state.user.id).update({ [itemToAdd]: itemToAddQuantity} );
 
-            const newListArray = []; 
-            const newHowMuch = [];
-
-            newListArray.push(itemToAdd);
-            newHowMuch.push(itemToAddQuantity);
-            
-            this.state.firebaseObj.update({[newListArray]: newHowMuch});
             this.updateDOM();
         };
     };
 
     updateDOM = () => {
+        // const dbRef = firebase.database().ref(this.state.user.id);
+        // console.log(dbRef, dbRef.child);
+        
         this.state.firebaseObj.on('value', (snapshot) => {
-            const data = snapshot.val();
-            const newListArray = [];
-            const newHowMuch = [];
+                const data = snapshot.val()[this.state.user.id];
+                const newListArray = [];
+                const newHowMuch = [];
 
-            for (let propertyName in data) {
-                newListArray.push(propertyName);
-                newHowMuch.push(data[propertyName]);
-            };
+                for (let propertyName in data) {
+                    newListArray.push(propertyName);
+                    newHowMuch.push(data[propertyName]);
+                };
 
-            this.setState({
-                list: newListArray,
-                howMuch: newHowMuch,
-                ready: true,
-                userInput: "",
-                userInputQuantity: "",
-                longest: {
-                    userInput: 0,
-                    userInputQuantity: 0,
-                },
-                amountWords: {
-                    userInput: 0,
-                    userInputQuantity: 0,
-                },
-            });
+                this.setState({
+                    list: newListArray,
+                    howMuch: newHowMuch,
+                    ready: true,
+                    userInput: "",
+                    userInputQuantity: "",
+                    longest: {
+                        userInput: 0,
+                        userInputQuantity: 0,
+                    },
+                    amountWords: {
+                        userInput: 0,
+                        userInputQuantity: 0,
+                    },
+                });
         });
     }
 
     // removing a certain list element
     deleteList = (listEl) => {
-        this.state.firebaseObj.child(listEl).remove();
+        this.state.firebaseObj.child(this.state.user.id).child(listEl).remove();
     };
     
     // emptying the whole list
-    deleteAll = (e) => {
-        e.preventDefault();
-        this.setState({
-            list: [],
-            howMuch: []
-        });
-        this.state.firebaseObj.set(null);
+    deleteAll = () => {
+        this.state.firebaseObj.child(this.state.user.id).remove();
     };
 
     // getting up-to-date data from database
     componentDidMount() {
         this.updateDOM();
+
+        const auth = firebase.auth();
+
+        auth.onAuthStateChanged( (user) => {
+            if (!user) {
+                return
+            } else {
+                this.setState({
+                    loggedIn: true,
+                    user: {
+                        id: user.uid,
+                        displayedName: user.displayName,
+                    },
+                });
+            }
+        });
     };
 
     closeErrorPopUp = () => {
@@ -163,7 +207,7 @@ class Main extends Component {
     };
 
     render() {
-        const {changeLanguage, languages: {languageCurrent:{ addBtn, closeErrorMsg, errorMsg, h1, h2, item, itemPlaceholder, madeBy, quantity, quantityPlaceholder, removeAllBth, removeThisEl}} } = this.props;
+        const {changeLanguage, languages: {languageCurrent:{hello, user, logIn, logOut, googleLogInAria, addBtn, closeErrorMsg, errorMsg, h1, h2, item, itemPlaceholder, madeBy, quantity, quantityPlaceholder, removeAllBth, removeThisEl}} } = this.props;
 
         return (
             <main className="wrapper">
@@ -172,6 +216,25 @@ class Main extends Component {
                     <button onClick={changeLanguage} value='ru' >RU</button>
                     <button onClick={changeLanguage} value='cn' >CN</button>
                 </div>
+
+                {
+                this.state.ready &&
+                    <div className="signInOut">
+                        {
+                            this.state.user.displayedName ?
+                            <p>{hello}, {this.state.user.displayedName.split(' ')[0]}</p> :
+                            <p>{hello}, {user}</p>
+                        }
+
+                        {
+                            !this.state.loggedIn
+                            ? 
+                            <button onClick={this.logIn} aria-label={googleLogInAria}><i className="fab fa-google" aria-hidden="true"></i> {logIn}</button>
+                            :
+                            <button onClick={this.logOut}><i className="fab fa-google" aria-hidden="true"></i> {logOut}</button>
+                        }
+                    </div>
+                }
 
                 <h1>{h1}</h1>
 
@@ -219,9 +282,10 @@ class Main extends Component {
                 </ul>
 
                 {
-                this.state.ready 
+                this.state.ready && this.state.list.length
                 ? <div className="removeAll"><button onClick={this.deleteAll}>{removeAllBth}</button> </div> 
-                : <div className="waitingClock"><img src={require("./assets/sandClock.png")} alt="waiting clock"/></div>
+                : !this.state.ready ? <div className="waitingClock"><img src={require("./assets/sandClock.png")} alt="waiting clock"/></div>
+                : null
                 }
             </main>
         );

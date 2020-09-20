@@ -9,6 +9,11 @@ class ToDoApp extends Component {
     this.state = {
       languageInterface: {
         en: {
+            hello: "Hello",
+            user: "User",
+            logIn: "Log in",
+            logOut: "Log out",
+            googleLogInAria: "Log in via Google",
             h1: "To do list",
             item: "Item to buy/to do",
             itemPlaceholder: "e.g. buy avocado",
@@ -26,6 +31,11 @@ class ToDoApp extends Component {
             madeBy: 'Made by',
         },
         ru: {
+            hello: "Здравствуйте",
+            user: "Пользователь",
+            logIn: "Войти",
+            logOut: "Выйти",
+            googleLogInAria: "Войти через Google",
             h1: "Cписок дел",
             item: "Что сделать/купить",
             itemPlaceholder: "напр. купить авокадо",
@@ -45,6 +55,11 @@ class ToDoApp extends Component {
             
         },
         cn: {
+            hello: "您好",
+            user: "用戶",
+            logIn: "登入",
+            logOut: "登出",
+            googleLogInAria: "用google登入",
             h1: "任務清單",
             item: "需要買/做的物品",
             itemPlaceholder: "例如：買酪梨",
@@ -64,6 +79,11 @@ class ToDoApp extends Component {
         }
       },
       languageCurrent: {
+        hello: "Hello",
+        user: "User",
+        logIn: "Log in",
+        logOut: "Log out",
+        googleLogInAria: "Log in via Google",
         h1: "To do list",
         item: "Item to buy/to do",
         itemPlaceholder: "e.g. buy avocado",
