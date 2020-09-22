@@ -34,7 +34,7 @@ class Main extends Component {
         const provider = new firebase.auth.GoogleAuthProvider();
         const auth = firebase.auth();
 
-        auth.signInWithPopup(provider).then( (result) => {          
+        auth.signInWithPopup(provider).then( (result) => {   
             this.setState({
                 loggedIn: true,
                 user: {

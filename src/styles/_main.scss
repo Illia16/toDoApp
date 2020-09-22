@@ -33,6 +33,7 @@ button:focus {
 fieldset {
     border: 0;
     padding: 0;
+    margin: 0;
 }
 
 .userInputSection {
@@ -75,6 +76,14 @@ input[type="text"]:hover,
 input[type="text"]:focus {
     border: transparent 2px solid;
     border-bottom: black 2px solid;
+}
+
+@media (max-width: 500px ) {
+    .userInputSection > *,
+    .removeAll button {
+        padding: 10px 0;
+        margin: 20px 0;
+    }
 }
 
 // MAIN ///////////////////////////
@@ -140,12 +149,20 @@ main li > * {
     position: fixed;
     top: 1%;
     right: 1%;
+    display: flex;
 
     > * {
         margin: 10px;
     }
 }
 
+@media (max-width: 500px ) {
+    .signInOut {
+        flex-direction: column;
+        align-items: center;
+        max-width: 150px;
+    }
+}
 
 
 // Footer
@@ -206,4 +223,19 @@ footer .linkedin:focus {
     bottom: 0;
     left: 0;
     right: 0;
+}
+
+@media (max-width: 500px ) {
+    .popup {
+        height: 150px;
+        top: 40%;
+    }
+
+    .popup p {
+        font-size: 1.6rem;
+    }
+
+    .popup button {
+        padding: 5px 10px;
+    }
 }
