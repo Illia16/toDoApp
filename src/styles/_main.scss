@@ -192,7 +192,6 @@ footer .linkedin:focus {
 // Error Pop Up
 .popup {
     position: fixed;
-    background: rgb(87, 85, 85);
     opacity: 1;
 
     top: 25%;
@@ -207,7 +206,7 @@ footer .linkedin:focus {
 
 .popup p {
     text-align: center;
-    color: white;
+    color: black;
     margin: auto;
     font-size: 3rem;
 }
@@ -217,7 +216,7 @@ footer .linkedin:focus {
 }
 
 .popupBack {
-    background-color: rgba(245, 240, 240, 0.8);
+    background-color: rgba(245, 240, 240, 0.95);
     position: fixed;
     top: 0;
     bottom: 0;
