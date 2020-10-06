@@ -114,7 +114,7 @@ class ToDoApp extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="app">
         <Main languages={this.state} changeLanguage={this.changeLang} />
         <Footer languages={this.state} />
       </div>
