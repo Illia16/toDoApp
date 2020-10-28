@@ -11,6 +11,8 @@ class ToDoApp extends Component {
         en: {
             hello: "Hello",
             user: "User",
+            wouldYouSignIn: "Would you like to sign in?",
+            languageInterface: "Language interface",
             logIn: "Log in",
             logOut: "Log out",
             googleLogInAria: "Log in via Google",
@@ -33,6 +35,8 @@ class ToDoApp extends Component {
         ru: {
             hello: "Здравствуйте",
             user: "Пользователь",
+            wouldYouSignIn: "не желаете авторизоваться?",
+            languageInterface: "Выберете язык интерфейса",
             logIn: "Войти",
             logOut: "Выйти",
             googleLogInAria: "Войти через Google",
@@ -45,7 +49,6 @@ class ToDoApp extends Component {
             h2: "Cписок текущих дел",
             removeThisEl: "удалить только этот элемент",
             removeAllBth: "Удалить все элементы",
-            errorMsg: "Ничего не выбрано",
             errorMsg: {
               noText: "Ничего не выбрано. Пожалуйста, напишите то, что вы хотите добавить",
               tooLongWord: "Текст слишком длинны",
@@ -57,6 +60,8 @@ class ToDoApp extends Component {
         cn: {
             hello: "您好",
             user: "用戶",
+            wouldYouSignIn: "不想登录?",
+            languageInterface: "语言界面",
             logIn: "登入",
             logOut: "登出",
             googleLogInAria: "用google登入",
@@ -69,7 +74,6 @@ class ToDoApp extends Component {
             h2: "目前的清單",
             removeThisEl: "只移除這項物品",
             removeAllBth: "清除所有物品",
-            errorMsg: "未選取任何物品",
             errorMsg: {
               noText: "未選取任何物品。請點選您想要的物品",
               tooLongWord: "選取過多",
@@ -81,6 +85,8 @@ class ToDoApp extends Component {
       languageCurrent: {
         hello: "Hello",
         user: "User",
+        wouldYouSignIn: "Would you like to sign in?",
+        languageInterface: "Language interface",
         logIn: "Log in",
         logOut: "Log out",
         googleLogInAria: "Log in via Google",

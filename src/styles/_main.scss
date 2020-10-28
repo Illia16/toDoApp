@@ -87,7 +87,6 @@ input[type="text"]:focus {
 }
 
 // MAIN ///////////////////////////
-
 main ul {
     display: flex;
     flex-direction: column;
@@ -123,44 +122,35 @@ main li > * {
 
 // languages
 .languages {
-    position: fixed;
-    top: 0;
-    left: 0;
     display: flex;
-    flex-direction: column;
 }
 
 .languages button {
     margin: 5px;
     padding: 10px;
     font-size: 1.6rem;
-    background: transparent;
-    color: black;
-    border: none;
+    background: #000;
+    color: #fff;
+    border: 1px solid transparent;
+    border-radius: 50%;
 }
 
 .languages button:hover,
 .languages button:focus {
-    transform: scale(1.25);
+    border: 1px solid black;
+    background: #fff;
+    color: #000;
 }
 
 // sign in(out)
 .signInOut {
-    position: fixed;
-    top: 1%;
-    right: 1%;
+    margin: 20px 0;
     display: flex;
+    flex-direction: column;
+    align-items: center;
 
     > * {
         margin: 10px;
-    }
-}
-
-@media (max-width: 500px ) {
-    .signInOut {
-        flex-direction: column;
-        align-items: center;
-        max-width: 150px;
     }
 }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import "./styles/app.scss";
 
 const Error = ( props ) => {
-    const {states:{ longest:{userInput, userInputQuantity}}, error:{noText, tooLongWord}, closeWindow, closeWindowText} = props;
+    const { error:{noText, tooLongWord}, closeWindow, closeWindowText } = props;
 
     return(
         <div className="popupBack">

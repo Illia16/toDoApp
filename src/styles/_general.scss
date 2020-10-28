@@ -2,12 +2,14 @@ body {
     font-size: 2rem;
     line-height: 1.6;
     font-family: 'Raleway', sans-serif;
+}
 
+.herobg {
     background: url(../assets/doToList.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    background-attachment: fixed;
+    min-height: 100vh;
 }
 
 h1,
@@ -18,7 +20,7 @@ h2{
 }
 
 h1 {
-    font-size: 7.5rem;
+    font-size: 5rem;
 }
 
 h2 {

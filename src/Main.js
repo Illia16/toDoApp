@@ -207,87 +207,95 @@ class Main extends Component {
     };
 
     render() {
-        const {changeLanguage, languages: {languageCurrent:{hello, user, logIn, logOut, googleLogInAria, addBtn, closeErrorMsg, errorMsg, h1, h2, item, itemPlaceholder, madeBy, quantity, quantityPlaceholder, removeAllBth, removeThisEl}} } = this.props;
+        const {changeLanguage, languages: {languageCurrent:{hello, user, wouldYouSignIn, languageInterface, logIn, logOut, googleLogInAria, addBtn, closeErrorMsg, errorMsg, h1, h2, item, itemPlaceholder, quantity, quantityPlaceholder, removeAllBth, removeThisEl}} } = this.props;
 
         return (
-            <main className="wrapper">
-                <div className="languages">
-                    <button onClick={changeLanguage} value='en' >EN</button>
-                    <button onClick={changeLanguage} value='ru' >RU</button>
-                    <button onClick={changeLanguage} value='cn' >CN</button>
+            <>
+                <div className="herobg">
+                    <h1>{h1}</h1>
+                    
+                    {
+                    this.state.ready &&
+                        <div className="signInOut">
+                            {
+                                this.state.user.displayedName ?
+                                <p>{hello}, {this.state.user.displayedName.split(' ')[0]}</p> :
+                                <>
+                                    <p>{hello}, {user}</p>
+                                    <p>{wouldYouSignIn}</p>
+                                </>
+                            }
+
+                            {
+                                !this.state.loggedIn
+                                ? 
+                                <button onClick={this.logIn} aria-label={googleLogInAria}><i className="fab fa-google" aria-hidden="true"></i> {logIn}</button>
+                                :
+                                <button onClick={this.logOut}><i className="fab fa-google" aria-hidden="true"></i> {logOut}</button>
+                            }
+
+                            <p>{languageInterface}</p>
+                            <div className="languages">
+                                <button onClick={changeLanguage} value='en' >EN</button>
+                                <button onClick={changeLanguage} value='ru' >RU</button>
+                                <button onClick={changeLanguage} value='cn' >CN</button>
+                            </div>
+                        </div>
+                    }
                 </div>
 
-                {
-                this.state.ready &&
-                    <div className="signInOut">
-                        {
-                            this.state.user.displayedName ?
-                            <p>{hello}, {this.state.user.displayedName.split(' ')[0]}</p> :
-                            <p>{hello}, {user}</p>
-                        }
+                <main className="wrapper">
+                    {
+                    
+                    this.state.errorPopUp ?
+                    <Error
+                    states={this.state}
+                    error={errorMsg}
+                    closeWindowText={closeErrorMsg}
+                    closeWindow={this.closeErrorPopUp}
+                    />
+                    : null
+                    }
 
-                        {
-                            !this.state.loggedIn
-                            ? 
-                            <button onClick={this.logIn} aria-label={googleLogInAria}><i className="fab fa-google" aria-hidden="true"></i> {logIn}</button>
-                            :
-                            <button onClick={this.logOut}><i className="fab fa-google" aria-hidden="true"></i> {logOut}</button>
-                        }
-                    </div>
-                }
+                    <form action="">
+                        <fieldset>
+                            <div className="userInputSection">
+                                <label htmlFor="itemInput">{item}</label>
+                                <input onChange={this.inputChange} name="userInput" value={this.state.userInput} type="text" id="itemInput" placeholder={itemPlaceholder} ></input>
 
-                <h1>{h1}</h1>
+                                <label htmlFor="itemQuantity">{quantity}</label>
+                                <input onChange={this.inputChange} name="userInputQuantity" value={this.state.userInputQuantity} type="text" id="itemQuantity" placeholder={quantityPlaceholder}></input>
 
-                {
-                
-                this.state.errorPopUp ?
-                <Error
-                states={this.state}
-                error={errorMsg}
-                closeWindowText={closeErrorMsg}
-                closeWindow={this.closeErrorPopUp}
-                />
-                : null
-                }
+                                <button onClick={this.addItem}>{addBtn}</button>
+                            </div>
+                        </fieldset>
+                    </form>
 
-                <form action="">
-                    <fieldset>
-                        <div className="userInputSection">
-                            <label htmlFor="itemInput">{item}</label>
-                            <input onChange={this.inputChange} name="userInput" value={this.state.userInput} type="text" id="itemInput" placeholder={itemPlaceholder} ></input>
+                    <h2>{h2}</h2>
+                    <ul>
+                    {
+                        this.state.list.map( (listItem, index) => {
+                            const quantity = this.state.howMuch[index]
 
-                            <label htmlFor="itemQuantity">{quantity}</label>
-                            <input onChange={this.inputChange} name="userInputQuantity" value={this.state.userInputQuantity} type="text" id="itemQuantity" placeholder={quantityPlaceholder}></input>
+                            return (
+                                <li key={`keyFor`+listItem} className="thingsToDo">
+                                    <p><span>{index + 1 + '.'}</span> {listItem}</p>
+                                    <p>{quantity}</p>
+                                    <button onClick={ () => this.deleteList(listItem)} className="closeWindow" aria-label={removeThisEl} title={removeThisEl}><i className="fas fa-times" aria-hidden="true"></i></button>
+                                </li>
+                            )
+                        })
+                    }
+                    </ul>
 
-                            <button onClick={this.addItem}>{addBtn}</button>
-                        </div>
-                    </fieldset>
-                </form>
-
-                <h2>{h2}</h2>
-                <ul>
-                {
-                    this.state.list.map( (listItem, index) => {
-                        const quantity = this.state.howMuch[index]
-
-                        return (
-                            <li key={`keyFor`+listItem} className="thingsToDo">
-                                <p><span>{index + 1 + '.'}</span> {listItem}</p>
-                                <p>{quantity}</p>
-                                <button onClick={ () => this.deleteList(listItem)} className="closeWindow" aria-label={removeThisEl} title={removeThisEl}><i className="fas fa-times" aria-hidden="true"></i></button>
-                            </li>
-                        )
-                    })
-                }
-                </ul>
-
-                {
-                this.state.ready && this.state.list.length
-                ? <div className="removeAll"><button onClick={this.deleteAll}>{removeAllBth}</button> </div> 
-                : !this.state.ready ? <div className="waitingClock"><img src={require("./assets/sandClock.png")} alt="waiting clock"/></div>
-                : null
-                }
-            </main>
+                    {
+                    this.state.ready && this.state.list.length
+                    ? <div className="removeAll"><button onClick={this.deleteAll}>{removeAllBth}</button> </div> 
+                    : !this.state.ready ? <div className="waitingClock"><img src={require("./assets/sandClock.png")} alt="waiting clock"/></div>
+                    : null
+                    }
+                </main>
+            </>
         );
     };
 };
