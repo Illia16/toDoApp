@@ -10,6 +10,13 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     min-height: 100vh;
+
+    p {
+        color: #000;
+        // text-shadow: 2px 2px #000;
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: yellowgreen;
+    }
 }
 
 h1,
@@ -20,6 +27,7 @@ h2{
 }
 
 h1 {
+    margin: 0;
     font-size: 5rem;
 }
 
