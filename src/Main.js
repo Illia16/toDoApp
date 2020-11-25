@@ -213,9 +213,8 @@ class Main extends Component {
             <>
                 <div className="herobg">
                     <h1>{h1}</h1>
-                    
                     {
-                    this.state.ready &&
+                        this.state.ready &&
                         <div className="signInOut">
                             {
                                 this.state.user.displayedName ?
